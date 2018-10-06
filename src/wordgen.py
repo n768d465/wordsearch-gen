@@ -6,7 +6,7 @@ class WordSearchGen:
         return {
             "word": self._pull_word(),
             "orientation": self.orientations[random.randint(0,2)],
-            "reversed": random.random() > 0.75
+            "reversed": random.random() > 0.70
         }
 
     def get_new_orientation():
