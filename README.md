@@ -1,11 +1,11 @@
 # neild.wordsearch
 
 Random wordsearch generator, using random words pulled from an online dictionary.
-Under active development.
 
 # Clone and run
 
     git clone https://github.com/n768d465/neild.wordsearch
+    cd src
     python src/wordsearch.py
 
 # Sample output

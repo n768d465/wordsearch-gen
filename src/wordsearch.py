@@ -6,16 +6,7 @@ import string
 class WordSearchmaker:
 
     def is_placeable(self, word, path):
-        if all(char.strip == ' ' for char in path):
-            return True
-        else:
-            for char, step in zip(word, path):
-                if step != ' ':
-                    if step != char:
-                        return False
-
-        #print("Found successful path: ", path, " with word: ", word)
-        return True
+        return not any((step != ' ' and step != char) for (char, step) in zip(word, path))
 
     def place_word(self, orientation, word, row, col):
         if orientation == "HORIZONTAL":
@@ -57,12 +48,6 @@ class WordSearchmaker:
             if y == ' ' else y for y in x] for x in self.grid]
         )
 
-    def _fill_random_char(self, space):
-        alphabet = string.ascii_lowercase
-        print(space)
-        if space == ' ':
-            return alphabet[random.randint(0,25)]
-
     def make_wordsearch(self):
         for word in self.words:
             placement_attempts = 0
@@ -71,18 +56,16 @@ class WordSearchmaker:
             row_spot, col_spot = self._get_new_positions(word['orientation'])
             path = self._get_path(word['orientation'], row_spot, col_spot)
 
-            if self.is_placeable(word_key, path):
-                self.place_word(word['orientation'], word_key, row_spot, col_spot)
+            while not self.is_placeable(word_key, path):
+                row_spot, col_spot = self._get_new_positions(word['orientation'])
+                path = self._get_path(word['orientation'], row_spot, col_spot)
+                placement_attempts += 1
+                if placement_attempts == self.max_attempts:
+                    self.words = [words for words in self.words if words.get('word') != word['word']]
+                    break
             else:
-                while not self.is_placeable(word_key, path):
-                    row_spot, col_spot = self._get_new_positions(word['orientation'])
-                    path = self._get_path(word['orientation'], row_spot, col_spot)
-                    placement_attempts += 1
-                    if placement_attempts == self.max_attempts:
-                        self.words = [words for words in self.words if words.get('word') != word['word']]
-                        break
-                else:
-                    self.place_word(word['orientation'], word_key, row_spot, col_spot)
+                print("Successfully placed word: ", word, " with path: ", path)
+                self.place_word(word['orientation'], word_key, row_spot, col_spot)
         
         self._fill_remaining_spaces()
 
@@ -95,14 +78,13 @@ class WordSearchmaker:
         self.length = 0
         self.make_wordsearch()
 
-        print()
-        pprint(self.grid, width=self.dim * 10)
-        print()
-        print("Word bank: ")
-        pprint([word['word'] for word in self.words])
 
 def main():
-    ws = WordSearchmaker(int(input("Enter a dimension (must be at least 5)> ")), words = [])
+    ws = WordSearchmaker(5, words = [])
+
+    for row in ws.grid:
+        print(" ".join(row))
+    pprint([word['word'] for word in ws.words])
 
 if __name__ == '__main__':
-        main()
+    main()
