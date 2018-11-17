@@ -98,8 +98,9 @@ class WordSearchGenerator:
         self._make_wordsearch()
 
 
-def main():
-    ws = WordSearchGenerator(int(input()), words=[], color_words=True)
+def run_wordsearch():
+    dim = 10
+    ws = WordSearchGenerator(dim=dim, words=[], color_words=False)
 
     for row in ws.grid:
         print(" ".join(row))
@@ -107,4 +108,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_wordsearch()
