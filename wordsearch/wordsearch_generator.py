@@ -1,23 +1,30 @@
 from word_bank import get_wordbank, pull_word
 from random import randint
 from string import ascii_lowercase
+import argparse
+
+
+def _is_placeable(word, path):
+    return not any((step != " " and step != char) for (char, step) in zip(word, path))
+
+
+def enumerate_with_orientation(ort, word, row, col):
+
+    if ort == "HORIZONTAL":
+        it = enumerate(word, col)
+    elif ort == "VERTICAL":
+        it = enumerate(word, row)
+    elif ort == "DIAGONAL":
+        diag = min(row, col)
+        it = enumerate(word, diag)
+
+    return it
 
 
 class WordSearchGenerator:
-    def _is_placeable(self, word, path):
-        return not any(
-            (step != " " and step != char) for (char, step) in zip(word, path)
-        )
-
     def _place_word(self, orientation, word, row, col):
-        if orientation == "HORIZONTAL":
-            it = enumerate(word, col)
-        elif orientation == "VERTICAL":
-            it = enumerate(word, row)
-        elif orientation == "DIAGONAL":
-            diag = min(row, col)
-            it = enumerate(word, diag)
 
+        it = enumerate_with_orientation(orientation, word, row, col)
         for i, char in it:
             if orientation == "HORIZONTAL":
                 self.grid[row][i] = char
@@ -57,42 +64,38 @@ class WordSearchGenerator:
     def _make_wordsearch(self):
         for _ in range(self.dim):
             placement_attempts = self.dim - 1
-            reverse_criteria_met = randint(0, 10) >= 7
             while placement_attempts > 0:
                 ort = ("HORIZONTAL", "VERTICAL", "DIAGONAL")[randint(0, 2)]
                 i, j = self._get_new_positions(ort)
                 path = self._get_path(ort, i, j)
                 path_len = len(path)
                 placeable_words = set(
-                    filter(lambda w: self._is_placeable(w, path), self.words[path_len])
+                    filter(lambda w: _is_placeable(w, path), self.words[path_len])
                 )
 
                 try:
                     word = pull_word(placeable_words)
-                    if reverse_criteria_met:
-                        reversed_word = word[::-1]
-                        self._place_word(ort, reversed_word, i, j)
-                    else:
-                        self._place_word(ort, word, i, j)
-                    self.bank.append(word)
+                    self._place_word(ort, word, i, j)
+                    self.bank.add(word)
                     break
                 except Exception:
                     placement_attempts = placement_attempts - 1
                     continue
 
-        self._fill_remaining_spaces()
+        if self.fill:
+            self._fill_remaining_spaces()
 
-    def __init__(self, dim, words=[]):
+    def __init__(self, dim, words=[], fill=True):
         self.dim = dim
+        self.fill = fill
         self.grid = [[" " for y in range(x * dim, x * dim + dim)] for x in range(dim)]
         self.words = get_wordbank(dim) if not len(words) else words
-        self.bank = []
+        self.bank = set()
         self._make_wordsearch()
 
 
-def run_wordsearch():
-    dim = 10
-    ws = WordSearchGenerator(dim=dim)
+def run_wordsearch(dim, fill):
+    ws = WordSearchGenerator(dim=dim, fill=fill)
 
     for row in ws.grid:
         print(" ".join(row))
@@ -101,4 +104,10 @@ def run_wordsearch():
 
 
 if __name__ == "__main__":
-    run_wordsearch()
+    parser = argparse.ArgumentParser(description="Random wordsearch generator.")
+    parser.add_argument("--dim", type=int, default=10)
+    parser.add_argument("--no-fill", action="store_false")
+
+    args = parser.parse_args()
+    print(args)
+    run_wordsearch(args.dim, args.no_fill)
