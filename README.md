@@ -6,30 +6,32 @@ Random wordsearch generator, using random words pulled from an online dictionary
 
     git clone https://github.com/n768d465/neild.wordsearch
     cd src
-    python src/wordsearch.py
+    python src/wordsearch_generator.py
 
 # Sample output
 
-    Enter a dimension (must be at least 5)> 10
+    h c l i h o k c g v
+    g e v x p y a t i d
+    l f b k e p u h a o
+    a d i d r s t s p m
+    s e q k b r o n c o
+    s c x j b e c v v a
+    w i h k b p r g i t
+    a b s y k i a n g l
+    r e r m e c c a i c
+    e l g j g f y t l e
 
-    [['t', 'i', 'b', 'f', 'w', 'c', 'f', 'c', 'z', 'v'],
-     ['r', 'y', 'a', 'u', 'o', 'i', 'z', 'm', 'l', 'y'],
-     ['a', 'n', 'r', 'w', 'p', 'c', 'k', 'c', 'w', 'i'],
-     ['f', 'r', 'd', 'n', 't', 'b', 'a', 'k', 'o', 'i'],
-     ['f', 'e', 's', 't', 'a', 'k', 'r', 'l', 'm', 'i'],
-     ['i', 't', 'q', 'i', 'l', 't', 'd', 'i', 'l', 'p'],
-     ['c', 't', 'd', 'n', 'p', 'a', 'd', 'f', 'n', 't'],
-     ['b', 'b', 'h', 't', 'm', 'b', 'w', 'i', 'p', 'g'],
-     ['o', 'v', 'u', 'l', 'a', 't', 'e', 'a', 'm', 'j'],
-     ['p', 'o', 'n', 't', 'i', 'a', 'c', 'h', 'y', 'l']]
+    {'bernie', 'vigil', 'glassware', 'decibel', 'autocracy', 'tid', 'ernie', 'gnat', 'keg', 'bronco'}
 
-    Word bank: 
-    ['traffic',
-     'ovulate',
-     'upbring',
-     'away',
-     'pontiac',
-     'mid',
-     'focal',
-     'tan',
-     'bar']
+You can also specify a wordsearch size and whether or not to allow to fill the board with random characters
+
+    python wordsearch_generator.py --dim=8 --no-fill
+                
+    p           m
+    t o s h i b a
+        m       r
+    p u r p o r t
+        e   e   i
+        a   t i n
+        m   c   i
+    {'etc', 'pompeii', 'purport', 'ream', 'toshiba', 'martini'}
