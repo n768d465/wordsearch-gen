@@ -10,12 +10,12 @@ icors = CORS(app, resources={r"/": {"origins": "*"}})
 
 
 class Product(Resource):
-    def get(self, dim):
-        wg = WordSearchGenerator(dim)
-        return {"grid": wg.grid, "word_bank": wg.words}
+    def get(self):
+        wg = WordSearchGenerator(10)
+        return {"grid": wg.grid, "word_bank": wg.bank}
 
 
 api.add_resource(Product, "/")
 
 if __name__ == "__main__":
-    app.run(host="192.168.0.18", port=5000, debug=True)
+    app.run(host="192.168.0.17", port=5000, debug=True)

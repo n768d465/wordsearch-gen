@@ -1,8 +1,6 @@
 import random
 import requests
 from collections import defaultdict
-from pprint import pprint
-import json
 
 WORD_LIST = (
     "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
@@ -11,14 +9,12 @@ WORD_LIST = (
 
 def pull_word(word_list):
     pulled_word = random.sample(word_list, 1)[0]
-
     word_list.remove(pulled_word)
     return pulled_word
 
 
 def get_wordbank(dim):
     word_list = get_words_from_site(dim)
-
     all_words = defaultdict(lambda: [])
 
     for w in word_list:
