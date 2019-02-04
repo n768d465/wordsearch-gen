@@ -4,12 +4,11 @@ from string import ascii_lowercase
 import argparse
 
 
-def _is_placeable(word, path):
+def is_placeable(word, path):
     return not any((step != " " and step != char) for (char, step) in zip(word, path))
 
 
 def enumerate_with_orientation(ort, word, row, col):
-
     if ort == "HORIZONTAL":
         it = enumerate(word, col)
     elif ort == "VERTICAL":
@@ -70,7 +69,7 @@ class WordSearchGenerator:
                 path = self._get_path(ort, i, j)
                 path_len = len(path)
                 placeable_words = set(
-                    filter(lambda w: _is_placeable(w, path), self.words[path_len])
+                    filter(lambda w: is_placeable(w, path), self.words[path_len])
                 )
 
                 try:
@@ -109,5 +108,4 @@ if __name__ == "__main__":
     parser.add_argument("--no-fill", action="store_false")
 
     args = parser.parse_args()
-    print(args)
     run_wordsearch(args.dim, args.no_fill)
