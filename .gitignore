@@ -1,2 +1,4 @@
-e_pycache__/
+__pycache__/
 *.py[cod]
+.vscode
+wordsearch_api.py
