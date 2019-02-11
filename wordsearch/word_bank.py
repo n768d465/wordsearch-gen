@@ -18,7 +18,8 @@ def get_wordbank(dim):
     all_words = defaultdict(lambda: [])
 
     for w in word_list:
-        all_words[len(w)].append(w)
+        if len(w) <= 11:
+            all_words[len(w)].append(w)
 
     return all_words
 
@@ -31,4 +32,3 @@ def get_words_from_site(max_length):
         if len(word) in range(3, max_length + 1)
         and "'" not in word.decode("UTF-8").lower()
     }
-
