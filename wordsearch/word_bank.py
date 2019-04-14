@@ -33,7 +33,7 @@ class WordBank:
 
     def __init__(self, max_length):
         self.cached = get_words_from_site()
-        self.min_word_length = 5
+        self.min_word_length = 3
         self.max_length = max_length
         self.word_range = range(self.min_word_length, self.max_length + 1)
 

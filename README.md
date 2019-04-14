@@ -4,34 +4,40 @@ Random wordsearch generator, using random words pulled from an online dictionary
 
 # Clone and run
 
-    git clone https://github.com/n768d465/neild.wordsearch
-    cd wordsearch
-    python wordsearch_generator.py
+    $ git clone https://github.com/n768d465/neild.wordsearch
+    $ cd wordsearch
+    $ python wordsearch_generator.py
 
 # Sample output
 
-    h c l i h o k c g v
-    g e v x p y a t i d
-    l f b k e p u h a o
-    a d i d r s t s p m
-    s e q k b r o n c o
-    s c x j b e c v v a
-    w i h k b p r g i t
-    a b s y k i a n g l
-    r e r m e c c a i c
-    e l g j g f y t l e
+    i s n m r e s l m e
+    p h o n e b e m r b
+    c d u p l e x r v t
+    o t x v m r t i k r
+    s x i q i r o j j a
+    e g n o m o n i o n
+    t y b k m r l a x u
+    g a u g u i n e i e
+    y o h a n g v k t t
+    d c k w e l c o m e
 
-    {'bernie', 'vigil', 'glassware', 'decibel', 'autocracy', 'tid', 'ernie', 'gnat', 'keg', 'bronco'}
+    Word bank
+    ---------
+    welcome error violet onion immune gnomon coset duplex sexton phone gauguin
 
 You can also specify a wordsearch size and whether or not to allow to fill the board with random characters
 
-    python wordsearch_generator.py --dim=8 --no-fill
-                
-    p           m
-    t o s h i b a
-        m       r
-    p u r p o r t
-        e   e   i
-        a   t i n
-        m   c   i
-    {'etc', 'pompeii', 'purport', 'ream', 'toshiba', 'martini'}
+    $ python wordsearch_generator.py --dim=8 --no-fill
+
+    c l i m b
+    g o
+    r   n
+    a     c
+    t       e     p
+    i   a m y d   o
+    f     o     e l
+    y     o       e
+
+    Word bank
+    ---------
+    pole moo amy gratify climb concede
