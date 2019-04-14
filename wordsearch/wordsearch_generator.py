@@ -63,7 +63,6 @@ class WordSearchGenerator:
             if is_placeable(word, path):
                 self._place_word(ort, word, i, j)
                 self.bank.add(word)
-                print("Placeable:", word, path)
             else:
                 continue
 
