@@ -1,14 +1,7 @@
-from word_bank import sample_words
-from random import choice
+from word_bank import WordBank
+from random import choice, randint
 from string import ascii_lowercase
 import argparse
-
-
-def is_placeable(word, path):
-    if len(path) < len(word):
-        return False
-
-    return not any((step != " " and step != char) for (char, step) in zip(word, path))
 
 
 def enumerate_with_orientation(ort, word, row, col):
@@ -51,20 +44,16 @@ class WordSearchGenerator:
     def make_wordsearch(self):
         if self.max_word_length > self.dim:
             raise ValueError("Max word length is larger than the grid size.")
-        for word in sample_words(self.max_word_length):
-            ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL"))
-            try:
-                i, j = choice(self.coords)
-            except IndexError:
-                break
-            self.coords.remove((i, j))
-            path = self._get_path(ort, i, j)
 
-            if is_placeable(word, path):
+        while len(self.bank) < self.max_words:
+            ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL"))
+            i, j = choice(self.coords)
+            path = self._get_path(ort, i, j)
+            word = next(self.wb.placeable_words(path))
+            if word and len(self.bank) < self.max_words:
                 self._place_word(ort, word, i, j)
                 self.bank.add(word)
-            else:
-                continue
+                self.coords.remove((i, j))
 
         if self.fill:
             self._fill_remaining_spaces()
@@ -76,6 +65,8 @@ class WordSearchGenerator:
         self.grid = [[" " for y in range(x * dim, x * dim + dim)] for x in range(dim)]
         self.coords = [(x, y) for x in range(self.dim) for y in range(self.dim)]
         self.bank = set()
+        self.max_words = randint(self.dim - 2, self.dim + 5)
+        self.wb = WordBank(self.max_word_length)
 
 
 def run_wordsearch(dim, fill, length):
