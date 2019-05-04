@@ -49,7 +49,7 @@ class WordSearchGenerator:
             ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL"))
             i, j = choice(self.coords)
             path = self._get_path(ort, i, j)
-            word = next(self.wb.placeable_words(path))
+            word = self.wb.placeable_words(path)
             if word and len(self.bank) < self.max_words:
                 self._place_word(ort, word, i, j)
                 self.bank.add(word)
@@ -70,6 +70,7 @@ class WordSearchGenerator:
 
 
 def run_wordsearch(dim, fill, length):
+
     ws = WordSearchGenerator(dim=dim, fill=fill, max_word_length=length)
     ws.make_wordsearch()
 
