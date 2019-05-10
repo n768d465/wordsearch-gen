@@ -1,5 +1,3 @@
 __pycache__/
 *.py[cod]
 .vscode
-wordsearch_api.py
-words_dictionary.json

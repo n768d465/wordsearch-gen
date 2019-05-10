@@ -32,6 +32,7 @@ class WordSearchGenerator:
         return (randint(0, self.dim - 1), randint(0, self.dim - 1))
 
     def make_wordsearch(self):
+        self.grid = [[" "] * self.dim for _ in range(self.dim)]
         if self.max_word_length > self.dim:
             raise ValueError("Max word length is larger than the grid size.")
 
@@ -51,7 +52,7 @@ class WordSearchGenerator:
         self.dim = dim
         self.fill = fill
         self.max_word_length = max_word_length
-        self.grid = [[" "] * dim for _ in range(dim)]
+        self.grid = [[]]
         self.bank = set()
         self.max_words = randint(self.dim - 2, self.dim + 2)
         self.wb = WordSampler(self.max_word_length)
