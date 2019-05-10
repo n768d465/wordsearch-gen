@@ -5,6 +5,7 @@ Random wordsearch generator, using random words pulled from an online dictionary
 
 Clone
 -----
+::
 
     $ git clone https://github.com/n768d465/neild.wordsearch
     $ cd wordsearch
@@ -54,8 +55,10 @@ You can also specify a wordsearch size and whether or not to allow to fill the b
 
     ws = WordSearchGenerator(dim=8, max_word_length=4, fill=False)
     ws.make_wordsearch()
-
     ...
+
+::
+
 
           g a m    
       c            
