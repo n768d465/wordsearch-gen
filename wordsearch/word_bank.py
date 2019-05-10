@@ -11,18 +11,15 @@ def get_words_from_site():
     return {str(r, "UTF-8").lower() for r in res}
 
 
-def sample_words():
+def sample_words(sample_size=50):
     word_list = get_words_from_site()
     while True:
-        yield random.sample(word_list, 50)
+        yield random.sample(word_list, sample_size)
 
 
 class WordSampler:
     def _is_placeable(self, word, path):
         if len(path) < len(word):
-            return False
-
-        if all(c != " " for c in path):
             return False
 
         if "'" in word or len(word) not in self.word_range:
@@ -37,7 +34,7 @@ class WordSampler:
         placeables = set(filter(lambda w: self._is_placeable(w, path), sample))
 
         try:
-            return random.sample(placeables, 1)[0]
+            return random.choice(random.sample(placeables, 1))
         except Exception:
             return None
 
