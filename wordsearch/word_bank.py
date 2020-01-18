@@ -18,7 +18,10 @@ def _sample_words(sample_size=50):
 
 
 class WordSampler:
-    def _is_placeable(self, word, path):
+    def _is_placeable(self, word_item, path):
+        word = word_item["word"]
+
+        word = word[::-1] if word_item["reversed"] else word
         if len(path) < len(word):
             return False
 
@@ -30,8 +33,12 @@ class WordSampler:
         )
 
     def sample_placeable_word(self, path):
-        sample = next(self.sample)
-        placeables = set(filter(lambda w: self._is_placeable(w, path), sample))
+        word_sample = next(self.sample)
+        sample = [
+            {"word": w, "reversed": random.choice([True, False]), "positions": []}
+            for w in word_sample
+        ]
+        placeables = list(filter(lambda w: self._is_placeable(w, path), sample))
 
         try:
             return random.choice(random.sample(placeables, 1))
