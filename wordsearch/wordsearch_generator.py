@@ -15,6 +15,9 @@ class WordSearchGenerator:
         elif orientation == "DIAGONAL":
             for i, char in zip(range(self.dim - max(row, col)), word):
                 self.grid[row + i][col + i] = char
+        elif orientation == "FORWARD DIAGONAL":
+            for i, char in zip(range(self.dim - max(row, col)), word):
+                self.grid[row + i][col - i] = char
 
     def _get_path(self, orientation, i, j):
         if orientation == "HORIZONTAL":
@@ -23,6 +26,8 @@ class WordSearchGenerator:
             return [self.grid[n][j] for n in range(i, self.dim)]
         elif orientation == "DIAGONAL":
             return [self.grid[i + n][j + n] for n in range(self.dim - max(i, j))]
+        elif orientation == "FORWARD DIAGONAL":
+            return [self.grid[i + n][j - n] for n in range(self.dim - max(i, j))]
 
     def _fill_remaining_spaces(self):
         self.grid = [
@@ -38,7 +43,7 @@ class WordSearchGenerator:
             raise ValueError("Max word length is larger than the grid size.")
 
         while len(self.bank) < self.max_words:
-            ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL"))
+            ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL", "FORWARD DIAGONAL"))
             i, j = self._random_coords()
             path = self._get_path(ort, i, j)
             word_item = self.wb.sample_placeable_word(path)
