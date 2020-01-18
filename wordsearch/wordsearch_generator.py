@@ -30,6 +30,7 @@ class WordSearchGenerator:
             return [self.grid[i + n][j - n] for n in range(self.dim - max(i, j))]
 
     def _fill_remaining_spaces(self):
+        self.grid_words_only = [[r for r in row] for row in self.grid]
         self.grid = [
             [choice(ascii_lowercase) if y == " " else y for y in x] for x in self.grid
         ]
@@ -53,14 +54,13 @@ class WordSearchGenerator:
                 self._place_word(ort, placed_word, i, j)
                 self.bank.add(word)
 
-        if self.fill:
-            self._fill_remaining_spaces()
+        self._fill_remaining_spaces()
 
-    def __init__(self, dim=10, max_word_length=10, fill="True"):
+    def __init__(self, dim=10, max_word_length=10):
         self.dim = int(dim)
-        self.fill = ast.literal_eval(fill.capitalize())
         self.max_word_length = int(max_word_length)
         self.grid = [[]]
+        self.grid_words_only = [[]]
         self.bank = set()
         self.max_words = randint(self.dim - 2, self.dim + 2)
         self.wb = WordSampler(self.max_word_length)
