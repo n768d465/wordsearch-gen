@@ -1,7 +1,7 @@
 from .word_bank import WordSampler
 from random import choice, randint
 from string import ascii_lowercase
-import ast
+from .partial_diagonal import get_partial_diagonal
 
 
 class WordSearchGenerator:
@@ -16,8 +16,9 @@ class WordSearchGenerator:
             for i, char in zip(range(self.dim - max(row, col)), word):
                 self.grid[row + i][col + i] = char
         elif orientation == "FORWARD DIAGONAL":
-            for i, char in zip(range(self.dim - max(row, col)), word):
-                self.grid[row + i][col - i] = char
+            diag = get_partial_diagonal(self.grid, self.dim, row, col, indices=True)
+            for (i, j), char in zip(diag, word):
+                self.grid[i][j] = char
 
     def _get_path(self, orientation, i, j):
         if orientation == "HORIZONTAL":
@@ -27,12 +28,12 @@ class WordSearchGenerator:
         elif orientation == "DIAGONAL":
             return [self.grid[i + n][j + n] for n in range(self.dim - max(i, j))]
         elif orientation == "FORWARD DIAGONAL":
-            return [self.grid[i + n][j - n] for n in range(self.dim - max(i, j))]
+            return get_partial_diagonal(self.grid, self.dim, i, j)
 
     def _fill_remaining_spaces(self):
         self.grid_words_only = [[r for r in row] for row in self.grid]
         self.grid = [
-            [choice(ascii_lowercase) if y == " " else y for y in x] for x in self.grid
+            [choice(ascii_lowercase) if y.strip() else y for y in x] for x in self.grid
         ]
 
     def _random_coords(self):
