@@ -73,7 +73,7 @@ You can also specify a wordsearch size, and a maximum word length.
     silo carr cork uri tang cot err echo ego tory 
 
 
-If you want to show only the words within the grid, use `grid_words_only`.
+If you want to show only the words within the grid, use ``grid_words_only``.
 
 .. code-block:: python
 
@@ -81,6 +81,8 @@ If you want to show only the words within the grid, use `grid_words_only`.
     for row in ws.grid_words_only:
         print(" ".join(row))
     ...
+
+::
 
     l             h
     l   n a t s   y
