@@ -33,11 +33,8 @@ class WordSearchGenerator:
     def _fill_remaining_spaces(self):
         self.grid_words_only = [[r for r in row] for row in self.grid]
         self.grid = [
-            [choice(ascii_lowercase) if y.strip() else y for y in x] for x in self.grid
+            [choice(ascii_lowercase) if y == " " else y for y in x] for x in self.grid
         ]
-
-    def _random_coords(self):
-        return (randint(0, self.dim - 1), randint(0, self.dim - 1))
 
     def make_wordsearch(self):
         self.grid = [[" "] * self.dim for _ in range(self.dim)]
@@ -46,7 +43,8 @@ class WordSearchGenerator:
 
         while len(self.bank) < self.max_words:
             ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL", "FORWARD DIAGONAL"))
-            i, j = self._random_coords()
+            i, j = (randint(0, self.dim - 1), randint(0, self.dim - 1))
+
             path = self._get_path(ort, i, j)
             word_item = self.wb.sample_placeable_word(path)
             if word_item:
@@ -65,3 +63,4 @@ class WordSearchGenerator:
         self.bank = set()
         self.max_words = randint(self.dim - 2, self.dim + 2)
         self.wb = WordSampler(self.max_word_length)
+
