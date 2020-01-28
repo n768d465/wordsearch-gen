@@ -47,28 +47,50 @@ This will produce the following output::
     ---------
     welcome error violet onion immune gnomon coset duplex sexton phone gauguin
 
-You can also specify a wordsearch size and whether or not to allow to fill the board with random characters
+You can also specify a wordsearch size, and a maximum word length.
 
 .. code-block:: python
 
     from wordsearch_generator import WordSearchGenerator
 
-    ws = WordSearchGenerator(dim=8, max_word_length=4, fill=False)
+    ws = WordSearchGenerator(dim=8, max_word_length=4)
     ws.make_wordsearch()
     ...
 
 ::
 
-
-          g a m    
-      c            
-        a a u g   f
-    c r t g   f   a
-      i c y e a   l
-              r n l
-    h o l t   e b  
-    b a l m     c  
+    c k r k g n a t
+    e r r y l e i w
+    r o h c e t e t
+    c c a r r y d e
+    o l i s r u g x
+    t i j o c o i u
+    q r t p x l p z
+    g u y s x k b o
 
     Word bank
     ---------
-    balm cage nbc gam holt fall fare icy crt aug
+    silo carr cork uri tang cot err echo ego tory 
+
+
+If you want to show only the words within the grid, use `grid_words_only`.
+
+.. code-block:: python
+
+    ...
+    for row in ws.grid_words_only:
+        print(" ".join(row))
+    ...
+
+    l             h
+    l   n a t s   y
+    e w   l   z   d
+    y t o u t   a e
+      j s j a r   p
+          p        
+            a      
+            f r o m
+
+    Word bank
+    ---------
+    hyde jar jowl stan jolt paz tout yell spar from 
