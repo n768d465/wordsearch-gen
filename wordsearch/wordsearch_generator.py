@@ -1,4 +1,4 @@
-from .word_bank import WordSampler
+from .word_sampler import create_sampler
 from random import choice, randint
 from string import ascii_lowercase
 from .partial_diagonal import get_partial_diagonal
@@ -46,7 +46,7 @@ class WordSearchGenerator:
             i, j = (randint(0, self.dim - 1), randint(0, self.dim - 1))
 
             path = self._get_path(ort, i, j)
-            word_item = self.wb.sample_placeable_word(path)
+            word_item = self.sample_word(path)
             if word_item:
                 word = word_item["word"]
                 placed_word = word[::-1] if word_item["reversed"] else word
@@ -62,5 +62,5 @@ class WordSearchGenerator:
         self.grid_words_only = [[]]
         self.bank = set()
         self.max_words = randint(self.dim - 2, self.dim + 2)
-        self.wb = WordSampler(self.max_word_length)
+        self.sample_word = create_sampler(self.max_word_length)
 
