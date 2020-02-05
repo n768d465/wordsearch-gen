@@ -1,6 +1,5 @@
 def get_partial_diagonal(li, dim, x, y, indices=False):
     # this is disgusting, but will be refactored eventually.
-    # this is a quick way to correctly place words via forward diagonals.
 
     i = x
     j = y

@@ -5,20 +5,25 @@ from .partial_diagonal import get_partial_diagonal
 
 
 class WordSearchGenerator:
-    def _place_word(self, orientation, word, row, col):
+    def _place_word(self, orientation, word_item, row, col):
+        word = word_item["word"][::-1] if word_item["reversed"] else word_item["word"]
         if orientation == "HORIZONTAL":
             for i, char in enumerate(word, col):
                 self.grid[row][i] = char
+                word_item["positions"].append((row, i))
         elif orientation == "VERTICAL":
             for i, char in enumerate(word, row):
                 self.grid[i][col] = char
+                word_item["positions"].append((i, col))
         elif orientation == "DIAGONAL":
             for i, char in zip(range(self.dim - max(row, col)), word):
                 self.grid[row + i][col + i] = char
+                word_item["positions"].append((row + i, col + i))
         elif orientation == "FORWARD DIAGONAL":
             diag = get_partial_diagonal(self.grid, self.dim, row, col, indices=True)
             for (i, j), char in zip(diag, word):
                 self.grid[i][j] = char
+                word_item["positions"].append((i, j))
 
     def _get_path(self, orientation, i, j):
         if orientation == "HORIZONTAL":
@@ -48,19 +53,19 @@ class WordSearchGenerator:
             path = self._get_path(ort, i, j)
             word_item = self.sample_word(path)
             if word_item:
-                word = word_item["word"]
-                placed_word = word[::-1] if word_item["reversed"] else word
-                self._place_word(ort, placed_word, i, j)
-                self.bank.add(word)
+                self._place_word(ort, word_item, i, j)
+                self.bank.add(word_item["word"])
+                self.ws_data.append(word_item)
 
         self._fill_remaining_spaces()
 
-    def __init__(self, dim=10, max_word_length=10):
+    def __init__(self, dim=10, max_word_length=7):
         self.dim = int(dim)
         self.max_word_length = int(max_word_length)
         self.grid = [[]]
         self.grid_words_only = [[]]
         self.bank = set()
+        self.ws_data = []
         self.max_words = randint(self.dim - 2, self.dim + 2)
         self.sample_word = create_sampler(self.max_word_length)
 

@@ -1,6 +1,7 @@
 import random
 import requests
 import re
+import string
 
 
 def _get_words_from_site():
@@ -8,8 +9,14 @@ def _get_words_from_site():
         "http://svnweb.freebsd.org/csrg/share/dict"
         "/words?view=co&content-type=text/plain"
     )
-    res = requests.get(word_list).content.splitlines()
-    return {str(r, "UTF-8").lower() for r in res}
+    content = requests.get(word_list).content.splitlines()
+    word_content = set()
+    for c in content:
+        word = str(c, "UTF-8").lower()
+        if not re.search(f"[{string.punctuation}]", word):
+            word_content.add(word)
+
+    return word_content
 
 
 def _sample_words(word_range, sample_size=50):
@@ -29,10 +36,6 @@ def _filter_criteria(word_item, path):
     if len(word) > len(path):
         return False
 
-    # filter out known non-characters that exist in the word list
-    if re.search("['.]", word):
-        return False
-
     return _is_placeable(word, path)
 
 
@@ -50,7 +53,7 @@ def create_sampler(max_length):
         placeables = list(filter(lambda w: _filter_criteria(w, path), sample))
 
         try:
-            return random.choice(random.sample(placeables, 1))
+            return random.choice(placeables)
         except Exception:
             return None
 
