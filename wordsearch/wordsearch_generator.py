@@ -25,11 +25,11 @@ class WordSearchGenerator:
                 self._path_positions.append((k, j))
         if orientation == "DIAGONAL":
             for x, y in zip(range(i, grid_len), range(j, grid_len)):
-                self._current_path.append(self.grid[i][j])
+                self._current_path.append(self.grid[x][y])
                 self._path_positions.append((x, y))
         if orientation == "FORWARD DIAGONAL":
             for x, y in zip(range(i, -1, -1), range(j, grid_len)):
-                self._current_path.append(self.grid[i][j])
+                self._current_path.append(self.grid[x][y])
                 self._path_positions.append((x, y))
 
     def _fill_remaining_spaces(self):
