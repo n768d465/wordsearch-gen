@@ -1,39 +1,48 @@
 from .word_sampler import create_sampler
 from random import choice, randint
 from string import ascii_lowercase
-from .partial_diagonal import get_partial_diagonal
+
+
+class WSPaths:
+    def adjust_paths(self, grid, i, j):
+        pass
+
+    def __init__(self, grid, i, j):
+        self.grid = grid
+        self.i = i
+        self.j = j
+        self.grid_length = len(self.grid)
+
+        self.adjust_paths(grid, i, j)
 
 
 class WordSearchGenerator:
-    def _place_word(self, orientation, word_item, row, col):
+    def _place_word(self, word_item):
         word = word_item["word"][::-1] if word_item["reversed"] else word_item["word"]
-        if orientation == "HORIZONTAL":
-            for i, char in enumerate(word, col):
-                self.grid[row][i] = char
-                word_item["positions"].append((row, i))
-        elif orientation == "VERTICAL":
-            for i, char in enumerate(word, row):
-                self.grid[i][col] = char
-                word_item["positions"].append((i, col))
-        elif orientation == "DIAGONAL":
-            for i, char in zip(range(self.dim - max(row, col)), word):
-                self.grid[row + i][col + i] = char
-                word_item["positions"].append((row + i, col + i))
-        elif orientation == "FORWARD DIAGONAL":
-            diag = get_partial_diagonal(self.grid, self.dim, row, col, indices=True)
-            for (i, j), char in zip(diag, word):
-                self.grid[i][j] = char
-                word_item["positions"].append((i, j))
+        for (i, j), char in zip(self._path_positions, word):
+            self.grid[i][j] = char
+            word_item["positions"].append((i, j))
 
     def _get_path(self, orientation, i, j):
+        grid_len = len(self.grid)
+        self._current_path = []
+        self._path_positions = []
         if orientation == "HORIZONTAL":
-            return [self.grid[i][n] for n in range(j, self.dim)]
-        elif orientation == "VERTICAL":
-            return [self.grid[n][j] for n in range(i, self.dim)]
-        elif orientation == "DIAGONAL":
-            return [self.grid[i + n][j + n] for n in range(self.dim - max(i, j))]
-        elif orientation == "FORWARD DIAGONAL":
-            return get_partial_diagonal(self.grid, self.dim, i, j)
+            for k, n in enumerate(self.grid[i][j:]):
+                self._current_path.append(self.grid[i][k])
+                self._path_positions.append((i, k))
+        if orientation == "VERTICAL":
+            for k, _ in enumerate(self.grid):
+                self._current_path.append(self.grid[k][j])
+                self._path_positions.append((k, j))
+        if orientation == "DIAGONAL":
+            for x, y in zip(range(i, grid_len), range(j, grid_len)):
+                self._current_path.append(self.grid[i][j])
+                self._path_positions.append((i, j))
+        if orientation == "FORWARD DIAGONAL":
+            for x, y in zip(range(i, -1, -1), range(j, grid_len)):
+                self._current_path.append(self.grid[i][j])
+                self._path_positions.append((i, j))
 
     def _fill_remaining_spaces(self):
         self.grid_words_only = [[r for r in row] for row in self.grid]
@@ -50,10 +59,10 @@ class WordSearchGenerator:
             ort = choice(("HORIZONTAL", "VERTICAL", "DIAGONAL", "FORWARD DIAGONAL"))
             i, j = (randint(0, self.dim - 1), randint(0, self.dim - 1))
 
-            path = self._get_path(ort, i, j)
-            word_item = self.sample_word(path)
+            self._get_path(ort, i, j)
+            word_item = self.sample_word(self._current_path)
             if word_item:
-                self._place_word(ort, word_item, i, j)
+                self._place_word(word_item)
                 self.bank.add(word_item["word"])
                 self.ws_data.append(word_item)
 
@@ -68,4 +77,6 @@ class WordSearchGenerator:
         self.ws_data = []
         self.max_words = randint(self.dim - 2, self.dim + 2)
         self.sample_word = create_sampler(self.max_word_length)
+        self._current_path = []
+        self._path_positions = []
 
