@@ -16,12 +16,12 @@ class WordSearchGenerator:
         self._path_positions = []
 
         if orientation == "HORIZONTAL":
-            for k, n in enumerate(self.grid[i][j:]):
-                self._current_path.append(self.grid[i][k])
+            for k, n in enumerate(self.grid[i][j:], j):
+                self._current_path.append(n)
                 self._path_positions.append((i, k))
         if orientation == "VERTICAL":
-            for k, _ in enumerate(self.grid):
-                self._current_path.append(self.grid[k][j])
+            for k, row in enumerate(self.grid[i:], i):
+                self._current_path.append(row[j])
                 self._path_positions.append((k, j))
         if orientation == "DIAGONAL":
             for x, y in zip(range(i, grid_len), range(j, grid_len)):
