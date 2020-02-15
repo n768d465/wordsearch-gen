@@ -3,19 +3,6 @@ from random import choice, randint
 from string import ascii_lowercase
 
 
-class WSPaths:
-    def adjust_paths(self, grid, i, j):
-        pass
-
-    def __init__(self, grid, i, j):
-        self.grid = grid
-        self.i = i
-        self.j = j
-        self.grid_length = len(self.grid)
-
-        self.adjust_paths(grid, i, j)
-
-
 class WordSearchGenerator:
     def _place_word(self, word_item):
         word = word_item["word"][::-1] if word_item["reversed"] else word_item["word"]
@@ -27,6 +14,7 @@ class WordSearchGenerator:
         grid_len = len(self.grid)
         self._current_path = []
         self._path_positions = []
+
         if orientation == "HORIZONTAL":
             for k, n in enumerate(self.grid[i][j:]):
                 self._current_path.append(self.grid[i][k])
