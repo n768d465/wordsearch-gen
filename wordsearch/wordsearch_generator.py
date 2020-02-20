@@ -1,6 +1,7 @@
 from .word_sampler import create_sampler
 from random import choice, randint
 from string import ascii_lowercase
+from .path import path
 
 
 class WordSearchGenerator:
@@ -11,26 +12,12 @@ class WordSearchGenerator:
             word_item["positions"].append((i, j))
 
     def _get_path(self, orientation, i, j):
-        grid_len = len(self.grid)
         self._current_path = []
         self._path_positions = []
 
-        if orientation == "HORIZONTAL":
-            for k, n in enumerate(self.grid[i][j:], j):
-                self._current_path.append(n)
-                self._path_positions.append((i, k))
-        if orientation == "VERTICAL":
-            for k, row in enumerate(self.grid[i:], i):
-                self._current_path.append(row[j])
-                self._path_positions.append((k, j))
-        if orientation == "DIAGONAL":
-            for x, y in zip(range(i, grid_len), range(j, grid_len)):
-                self._current_path.append(self.grid[x][y])
-                self._path_positions.append((x, y))
-        if orientation == "FORWARD DIAGONAL":
-            for x, y in zip(range(i, -1, -1), range(j, grid_len)):
-                self._current_path.append(self.grid[x][y])
-                self._path_positions.append((x, y))
+        for x, y, char in path(self.grid, orientation, i, j):
+            self._current_path.append(char)
+            self._path_positions.append((x, y))
 
     def _fill_remaining_spaces(self):
         self.grid_words_only = [[r for r in row] for row in self.grid]
