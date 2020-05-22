@@ -39,8 +39,8 @@ def _filter_criteria(word_item, path):
     return _is_placeable(word, path)
 
 
-def create_sampler(max_length):
-    word_range = range(3, max_length + 1)
+def create_sampler(min_length, max_length):
+    word_range = range(min_length, max_length + 1)
     word_sample_iter = _sample_words(word_range)
 
     def sample_one_placeable(path):

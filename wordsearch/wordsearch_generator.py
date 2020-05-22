@@ -43,15 +43,16 @@ class WordSearchGenerator:
 
         self._fill_remaining_spaces()
 
-    def __init__(self, dim=10, max_word_length=7):
+    def __init__(self, dim=10, min_word_length=3, max_word_length=7):
         self.dim = int(dim)
+        self.min_word_length = int(min_word_length)
         self.max_word_length = int(max_word_length)
         self.grid = [[]]
         self.grid_words_only = [[]]
         self.bank = set()
         self.ws_data = []
         self.max_words = randint(self.dim - 2, self.dim + 2)
-        self.sample_word = create_sampler(self.max_word_length)
+        self.sample_word = create_sampler(self.min_word_length, self.max_word_length)
         self._current_path = []
         self._path_positions = []
 
