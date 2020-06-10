@@ -47,30 +47,31 @@ This will produce the following output::
     ---------
     welcome error violet onion immune gnomon coset duplex sexton phone gauguin
 
-You can also specify a wordsearch size, and a maximum word length.
+You can also specify a wordsearch size, a minimum word length, and a maximum word length.
 
 .. code-block:: python
 
     from wordsearch_generator import WordSearchGenerator
 
-    ws = WordSearchGenerator(dim=8, max_word_length=4)
+    ws = WordSearchGenerator(dim=9, min_word_length=5, max_word_length=9)
     ws.make_wordsearch()
     ...
 
 ::
 
-    c k r k g n a t
-    e r r y l e i w
-    r o h c e t e t
-    c c a r r y d e
-    o l i s r u g x
-    t i j o c o i u
-    q r t p x l p z
-    g u y s x k b o
+    v l c o r a l h f
+    x m j k g e r r y
+    e k h f y s a h v
+    j r e a r m b o i
+    g b a l s n b r o
+    y s d h d c l m l
+    k c w a n a e o a
+    l x a y b u l n u
+    a k y g t t o e t
 
     Word bank
     ---------
-    silo carr cork uri tang cot err echo ego tory 
+    ladle headway ascent coral hormone viola rabble
 
 
 If you want to show only the words within the grid, use ``grid_words_only``.
