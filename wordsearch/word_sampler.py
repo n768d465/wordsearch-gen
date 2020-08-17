@@ -1,44 +1,31 @@
 import random
-import requests
-import re
-import string
-from collections import defaultdict
+import json
 
 
 class Sampler:
     def __call__(self, path):
+        choice = str(random.choice(self.word_range))
+
         sample = [
             {"word": w, "reversed": random.choice([True, False]), "positions": []}
-            for w in self.word_list[random.choice(self.word_range)]
+            for w in self.word_list[self.category].get(choice, [])
         ]
 
-        placeables = list(filter(lambda w: _filter_criteria(w, path), sample))
+        placeables = list(filter(lambda w: w and _filter_criteria(w, path), sample))
         try:
             return random.choice(placeables)
         except Exception:
             return None
 
-    def __init__(self, min_length, max_length):
+    def __init__(self, category, min_length, max_length):
+        self.category = category
         self.word_range = range(min_length, max_length + 1)
-        self.word_list = _get_words_from_site()
+        self.word_list = _get_word_list()
 
 
-def _get_words_from_site():
-    word_list = (
-        "http://svnweb.freebsd.org/csrg/share/dict"
-        "/words?view=co&content-type=text/plain"
-    )
-    content = requests.get(word_list).content.splitlines()
-    word_content = defaultdict(list)
-    for c in content:
-        word = str(c, "UTF-8").lower()
-        if not re.search(f"[{string.punctuation}]", word):
-            word_content[len(word)].append(word)
-
-    for k in word_content.keys():
-        random.shuffle(word_content[k])
-
-    return word_content
+def _get_word_list():
+    with open("wordlist.json", "r") as infile:
+        return json.load(infile)
 
 
 def _filter_criteria(word_item, path):
