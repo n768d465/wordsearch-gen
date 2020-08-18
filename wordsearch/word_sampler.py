@@ -1,5 +1,6 @@
 import random
 import json
+from pathlib import Path
 
 
 class Sampler:
@@ -24,7 +25,9 @@ class Sampler:
 
 
 def _get_word_list():
-    with open("wordlist.json", "r") as infile:
+    # TODO: Find a better way to do this.
+    path = Path(__file__).parent / "./wordlist.json"
+    with open(path, "r") as infile:
         return json.load(infile)
 
 
