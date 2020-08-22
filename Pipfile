@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-Wordsearch-List = {version ="*", path = "./packages/Wordsearch_List-0.0.1-py3-none-any.whl"}
+Wordsearch-List = {version ="*", path = "../wordsearch-list"}
 
 [requires]
 python_version = "3.8"

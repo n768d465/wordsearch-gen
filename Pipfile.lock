@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "643e067bf0393ec215a048e305810f8fb7684cb74315697297ea92c0a5387ddf"
+            "sha256": "9b3d5bafe60f850e2ec6b23fb3a3cbb5d93c794100657b64d45d7872a4a2846f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -17,10 +17,8 @@
     },
     "default": {
         "wordsearch-list": {
-            "hashes": [
-                "sha256:ee7226b040140dd45dd4533991a6b0dc091a5271539e7ccfb2e6021a78df0f03"
-            ],
-            "version": "==0.0.1"
+            "path": "../wordsearch-list",
+            "version": "*"
         }
     },
     "develop": {}
