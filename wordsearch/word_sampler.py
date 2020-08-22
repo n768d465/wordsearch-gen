@@ -1,6 +1,5 @@
 import random
-import json
-from pathlib import Path
+from masterlist.builder import get_master_list
 
 
 class Sampler:
@@ -21,14 +20,7 @@ class Sampler:
     def __init__(self, category, min_length, max_length):
         self.category = category
         self.word_range = range(min_length, max_length + 1)
-        self.word_list = _get_word_list()
-
-
-def _get_word_list():
-    # TODO: Find a better way to do this.
-    path = Path(__file__).parent / "./wordlist.json"
-    with open(path, "r") as infile:
-        return json.load(infile)
+        self.word_list = get_master_list()
 
 
 def _filter_criteria(word_item, path):
