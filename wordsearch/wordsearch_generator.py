@@ -6,10 +6,9 @@ from .path import path
 
 class WordSearchGenerator:
     def _place_word(self, word_item):
-        word = word_item["word"][::-1] if word_item["reversed"] else word_item["word"]
-        for (i, j), char in zip(self._path_positions, word):
+        for (i, j), char in zip(self._path_positions, word_item.word):
             self.grid[i][j] = char
-            word_item["positions"].append((i, j))
+            word_item.positions.append((i, j))
 
     def _form_current_path(self, orientation, i, j):
         self._current_path = []
@@ -29,7 +28,7 @@ class WordSearchGenerator:
         self.grid = [[" "] * self.dim for _ in range(self.dim)]
         self.grid_words_only = [[]]
         self.bank = set()
-        self.ws_data = [[]]
+        self.ws_data = []
 
     def make_wordsearch(self):
         self._clear_params()
@@ -45,9 +44,9 @@ class WordSearchGenerator:
 
             self._form_current_path(ort, i, j)
             word_item = self.sample_placeable_word(self._current_path)
-            if word_item and word_item["word"] not in self.bank:
+            if word_item and word_item.word not in self.bank:
                 self._place_word(word_item)
-                self.bank.add(word_item["word"])
+                self.bank.add(word_item.word2)
                 self.ws_data.append(word_item)
 
         self._fill_remaining_spaces()
